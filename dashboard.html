@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard Prototype</title>
+
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    <style>
+	
+		h3.panel-heading span.label {
+			float: right;
+			margin-left: 20px;
+		}
+		
+		ol { padding-left: 20px; }
+		
+		em { font-weight: bold; }
+		
+		.nav-pills > li > a {
+			border-bottom-left-radius: 0;
+			border-bottom-right-radius: 0;
+		}
+		
+		.nav > li > a:focus {
+			outline: none !important;
+		}
+		
+		#q1 .panel, #q1 .panel-heading {
+			border-top-left-radius: 0;
+		}
+		
+	</style>
+    
+</head>
+<body>
+<div class="container-fluid">
+  <div class="row">
+    <div class="page-header">
+      <h1 class="text-center">Quiz Results</h1>
+      <h3 class="text-center">Dashboard</h3>
+    </div>
+  </div>
+  <hr>
+</div>
+<div class="container col-md-6 col-md-offset-3">
+ <table id="results" class="table table-bordered text-center">
+ 	<thead>
+ 		<tr>
+			<th class="text-center">#</th>
+			<th class="text-center">Q1</th>
+			<th class="text-center">Q2</th>
+			<th class="text-center">Q3</th>
+			<th class="text-center">Q4</th>
+			<th class="text-center">Q5</th>
+			<th class="text-center">Q6</th>
+			<th class="text-center">Q7</th>
+			<th class="text-center">Q8</th>
+		</tr>
+ 	</thead>
+ 	<tbody>
+<!--
+		<tr>
+			<td>1</td>
+			<td class="danger"><span class="glyphicon glyphicon-remove alert-danger" aria-hidden="true"></span></td>
+			<td class="success"><span class="glyphicon glyphicon-ok alert-success" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td class="danger"><span class="glyphicon glyphicon-remove alert-danger" aria-hidden="true"></span></td>
+			<td class="success"><span class="glyphicon glyphicon-ok alert-success" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+			<td><span class="glyphicon" aria-hidden="true"></span></td>
+		</tr>
+-->
+	</tbody>
+ </table>
+</div>
+<!--
+<div class="container">
+  <div class="row">
+    <div class="text-center col-md-6 col-md-offset-3">
+      <h4>Footer</h4>
+      <p>Copyright &copy; 2015 &middot; All Rights Reserved &middot; <a href="http://yourwebsite.com/" >My Website</a></p>
+    </div>
+  </div>
+  <hr>
+</div>
+-->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.11.3.min.js"></script> 
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.js"></script>
+   
+<script>
+	
+	$(document).ready(function(){
+		
+//		var tstJson = $.get("test.json");
+//		tstJson = tstJson;
+//		console.log(tstJson);
+		
+		var xmlhttp = new XMLHttpRequest();
+		var resultsTable = $("#results");
+		xmlhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				var myObj = JSON.parse(this.responseText);
+//				console.log(myObj); // 3
+				for(x in myObj){
+					var rowObj = myObj[x];
+					console.log(rowObj);
+					$("#results tbody").append("<tr id=r"+rowObj[0]+"><td>"+rowObj[0]+"</td></tr>");
+					for(n = 1; n < Object.keys(rowObj).length; n++){
+						if(rowObj[n]===true){
+							$("#results tr#r"+rowObj[0]).append("<td class='success'><span class='glyphicon glyphicon-ok alert-success' aria-hidden='true'></span></td>");							
+						} else if (rowObj[n]===false){
+							$("#results tr#r"+rowObj[0]).append("<td class='danger'><span class='glyphicon glyphicon-remove alert-danger' aria-hidden='true'></span></td>");
+						} else if (rowObj[n]===null){
+							$("#results tr#r"+rowObj[0]).append("<td>&hellip;</td>");
+						} else {
+							$("#results tr#r"+rowObj[0]).append("<td>"+rowObj[n]+"</td>");
+						}
+					}
+//					var newRow = "
+//					 	<tr>
+//							<td>'+myObj[0]+'</td>
+//							<td class='danger'><span class='glyphicon glyphicon-remove alert-danger' aria-hidden='true'></span></td>
+//							<td class='success'><span class='glyphicon glyphicon-ok alert-success' aria-hidden='true'></span></td>
+//							<td><span class='glyphicon' aria-hidden='true'></span></td>
+//							<td><span class='glyphicon' aria-hidden='true'></span></td>
+//							<td><span class='glyphicon' aria-hidden='true'></span></td>
+//							<td><span class='glyphicon' aria-hidden='true'></span></td>
+//							<td><span class='glyphicon' aria-hidden='true'></span></td>
+//							<td><span class='glyphicon' aria-hidden='true'></span></td>
+//						</tr>";
+				}
+			}
+		};
+		xmlhttp.open("GET", "test.json", true);
+		xmlhttp.send();
+//		console.log("done")console;
+		
+	});
+	
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
